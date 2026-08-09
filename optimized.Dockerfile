@@ -2,7 +2,7 @@
 FROM ubuntu:24.04
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ENV PYTHONUNBUFFERED=1 PYTHONIOENCODING=UTF-8 DEBIAN_FRONTEND=noninteractive
-ENV TZ=America/New_York LANG=en_US.UTF-8 LANGUAGE=en_US:en LC_ALL=en_US.UTF-8
+ENV TZ=America/Chicago LANG=en_US.UTF-8 LANGUAGE=en_US:en LC_ALL=en_US.UTF-8
 
 #=============================
 # Install System Dependencies
@@ -35,11 +35,9 @@ ENV PATH="/opt/venv/bin:$PATH"
 #================
 # Install Chrome
 #================
-RUN apt-get update && \
-    wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -O /tmp/chrome.deb && \
-    apt-get install -y /tmp/chrome.deb && \
-    rm /tmp/chrome.deb && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -O /tmp/chrome.deb && apt-get install -y /tmp/chrome.deb
+# Clean-up
+RUN rm /tmp/chrome.deb && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 #=====================
 # Set up SeleniumBase
@@ -54,12 +52,13 @@ WORKDIR /SeleniumBase
 #===================
 # Install Python Packages
 #===================
-RUN /opt/venv/bin/pip install --upgrade pip setuptools wheel && \
-    /opt/venv/bin/pip install -r requirements.txt --no-cache-dir && \
-    /opt/venv/bin/pip install . --no-cache-dir && \
-    /opt/venv/bin/pip install pyautogui playwright --no-cache-dir && \
-    seleniumbase get chromedriver --path && \
-    find . -name '*.pyc' -type f -delete && \
+RUN /opt/venv/bin/pip install --upgrade pip
+RUN /opt/venv/bin/pip install setuptools wheel pyautogui playwright
+RUN /opt/venv/bin/pip install -r requirements.txt
+RUN /opt/venv/bin/pip install . 
+RUN seleniumbase get chromedriver --path
+# Clean-up
+RUN find . -name '*.pyc' -type f -delete && \
     find . -type d -name '__pycache__' -exec rm -rf {} + 2>/dev/null || true
 
 #==============
@@ -70,12 +69,9 @@ ENV DISPLAY=":99"
 #==========================================
 # Create entrypoint and grab example tests
 #==========================================
-COPY integrations/docker/docker-entrypoint.sh /docker-entrypoint.sh
-COPY integrations/docker/run_docker_test_in_chrome.sh /SeleniumBase/run_docker_test_in_chrome.sh
-
-RUN apt-get update && apt-get install -y dos2unix && apt-get clean && rm -rf /var/lib/apt/lists/* && \
-    dos2unix /docker-entrypoint.sh /SeleniumBase/run_docker_test_in_chrome.sh && \
-    chmod +x /docker-entrypoint.sh /SeleniumBase/run_docker_test_in_chrome.sh
-
-ENTRYPOINT ["/docker-entrypoint.sh"]
+COPY docker-entrypoint.sh /SeleniumBase/
+COPY run_docker_test_in_chrome.sh /SeleniumBase/
+COPY my_first_test.py /SeleniumBase/
+RUN chmod +x /SeleniumBase/docker-entrypoint.sh /SeleniumBase/run_docker_test_in_chrome.sh
+ENTRYPOINT ["/SeleniumBase/docker-entrypoint.sh"]
 CMD ["/bin/bash"]

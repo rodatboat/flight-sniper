@@ -1,7 +1,8 @@
 # Build and Run
 ```bash
-docker build -t my-scraper .
-docker run --rm my-scraper
+docker build -f optimized.Dockerfile -t flight-sniper .
+docker build -t flight-sniper .
+docker run --rm flight-sniper
 ```
 
 # Install Deps

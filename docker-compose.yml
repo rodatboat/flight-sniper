@@ -1,6 +1,8 @@
 services:
-  scraper:
-    build: .
+  flight-sniper:
+    build: 
+      context: .
+      dockerfile: optimized.Dockerfile
     container_name: flight-sniper
     shm_size: "2gb"
     restart: "no"
