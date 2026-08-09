@@ -94,17 +94,18 @@ RUN rm ./google-chrome-stable_current_amd64.deb
 RUN apt-get update && apt-get install -y software-properties-common
 RUN add-apt-repository ppa:deadsnakes/ppa -y
 RUN apt-get update
-RUN apt-get install -y python3.13 python3.13-venv python3.13-dev build-essential
+RUN apt-get install -y python3.13 python3.13-venv python3-pip python3.13-dev build-essential
 RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.13 1
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
-RUN python3.13 -m ensurepip --upgrade
-RUN python3.13 -m pip install --upgrade pip
 RUN apt-get update
 RUN apt-get install -y python3.13-tk python3.13-dev
 RUN alias python=python3
 RUN echo "alias python=python3" >> ~/.bashrc
 RUN rm /usr/bin/python3
 RUN ln -s python3.13 /usr/bin/python3
+RUN python3.13 -m venv /opt/venv
+
+ENV PATH="/opt/venv/bin:$PATH"
 
 #===============
 # Cleanup Lists
@@ -126,7 +127,7 @@ COPY pytest.ini /SeleniumBase/pytest.ini
 COPY setup.cfg /SeleniumBase/setup.cfg
 COPY virtualenv_install.sh /SeleniumBase/virtualenv_install.sh
 RUN find . -name '*.pyc' -delete
-RUN pip install --upgrade pip setuptools wheel
+RUN pip install setuptools wheel
 RUN cd /SeleniumBase && ls && pip install -r requirements.txt --upgrade
 RUN cd /SeleniumBase && pip install .
 RUN pip install pyautogui
@@ -148,8 +149,10 @@ RUN Xvfb :99 -screen 1 1920x1080x16 -nolisten tcp &
 #==========================================
 # Create entrypoint and grab example tests
 #==========================================
-COPY docker-entrypoint.sh /
-COPY run_docker_test_in_chrome.sh /
-RUN chmod +x *.sh
+COPY integrations/docker/docker-entrypoint.sh /
+COPY integrations/docker/run_docker_test_in_chrome.sh /
+
+RUN sed -i 's/\r$//' /docker-entrypoint.sh /run_docker_test_in_chrome.sh
+RUN chmod +x /docker-entrypoint.sh /run_docker_test_in_chrome.sh
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["/bin/bash"]
