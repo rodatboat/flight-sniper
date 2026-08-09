@@ -1,0 +1,6 @@
+services:
+  scraper:
+    build: .
+    container_name: flight-sniper
+    shm_size: "2gb"
+    restart: "no"
