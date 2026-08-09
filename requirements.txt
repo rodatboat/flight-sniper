@@ -1,1 +1,4 @@
-selenium
+# selenium
+# undetected-chromedriver
+# webdriver-manager
+playwright
