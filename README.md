@@ -1,8 +1,10 @@
 # Build and Run
 ```bash
-docker build -f optimized.Dockerfile -t flight-sniper .
+docker build -f Dockerfile -t flight-sniper .
 docker build -t flight-sniper .
+# --rm removes the container once it exits
 docker run --rm flight-sniper
+docker run seleniumbase ./run_docker_test_in_chrome.sh
 ```
 
 # Install Deps

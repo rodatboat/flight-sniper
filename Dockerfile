@@ -1,155 +1,77 @@
-# SeleniumBase Docker Image
+# SeleniumBase Docker Image - Optimized
 FROM ubuntu:24.04
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
-ENV PYTHONUNBUFFERED=1
-ENV PYTHONIOENCODING=UTF-8
-ENV DEBIAN_FRONTEND=noninteractive
+ENV PYTHONUNBUFFERED=1 PYTHONIOENCODING=UTF-8 DEBIAN_FRONTEND=noninteractive
+ENV TZ=America/Chicago LANG=en_US.UTF-8 LANGUAGE=en_US:en LC_ALL=en_US.UTF-8
 
-#======================
-# Locale Configuration
-#======================
-RUN apt-get update
-RUN apt-get install -y --no-install-recommends tzdata locales
-RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && locale-gen
-ENV TZ=America/New_York
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-ENV LANG=en_US.UTF-8
-ENV LANGUAGE=en_US:en
-ENV LC_ALL=en_US.UTF-8
-RUN echo "LC_ALL=en_US.UTF-8" >> /etc/environment
-RUN echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
-RUN echo "LANG=en_US.UTF-8" > /etc/locale.conf
-RUN locale-gen en_US.UTF-8
-
-#===========================
-# Fingerprint Configuration
-#===========================
-RUN apt-get update
-RUN apt install -y fonts-liberation fonts-noto-color-emoji libvulkan1 libnss3 libatk-bridge2.0-0 libcups2 libxcomposite1 libxrandr2 libgbm1 libpango-1.0-0 libcairo2
-RUN apt install -y fonts-freefont-ttf fonts-dejavu-core fonts-ubuntu fonts-roboto fonts-droid-fallback
-
-#======================
-# Install Common Fonts
-#======================
-RUN apt-get update
-RUN apt-get install -y \
-    fonts-liberation2 \
-    fonts-font-awesome \
-    fonts-terminus \
-    fonts-powerline \
-    fonts-open-sans \
-    fonts-mononoki \
-    fonts-lato
-
-#============================
-# Install Linux Dependencies
-#============================
-RUN apt-get update
-RUN apt-get install -y \
-    dbus-x11 \
-    libatk1.0-0 \
-    libatspi2.0-0 \
-    libdbus-1-3 \
-    libdrm2 \
-    libgtk-3-0 \
-    libnspr4 \
-    libasound2t64 \
-    libu2f-udev \
-    libwayland-client0 \
-    libx11-6 \
-    libx11-xcb1 \
-    libxdamage1 \
-    libxfixes3 \
-    libxkbcommon0
-
-#==========================
-# Install useful utilities
-#==========================
-RUN apt-get update
-RUN apt-get install -y xdg-utils ca-certificates x11vnc
-
-#=================================
-# Install Bash Command Line Tools
-#=================================
-RUN apt-get update
-RUN apt-get -qy --no-install-recommends install \
-    curl \
-    sudo \
-    unzip \
-    vim \
-    wget \
-    xvfb
-
-#================
-# Install Chrome
-#================
-RUN apt-get update
-RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-RUN apt-get install -y ./google-chrome-stable_current_amd64.deb
-RUN rm ./google-chrome-stable_current_amd64.deb
+#=============================
+# Install System Dependencies
+#=============================
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    tzdata locales \
+    fonts-liberation fonts-dejavu-core fonts-noto-color-emoji \
+    ca-certificates curl wget unzip vim sudo xvfb xdg-utils x11vnc \
+    dbus-x11 libatk1.0-0 libatspi2.0-0 libdbus-1-3 libdrm2 libgtk-3-0 \
+    libnspr4 libasound2t64 libu2f-udev libwayland-client0 libx11-6 \
+    libx11-xcb1 libxdamage1 libxfixes3 libxkbcommon0 libvulkan1 \
+    libnss3 libatk-bridge2.0-0 libcups2 libxcomposite1 libxrandr2 libgbm1 \
+    libpango-1.0-0 libcairo2 software-properties-common && \
+    sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && locale-gen en_US.UTF-8 && \
+    ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
 #================
 # Install Python
 #================
-RUN apt-get update && apt-get install -y software-properties-common
-RUN add-apt-repository ppa:deadsnakes/ppa -y
-RUN apt-get update
-RUN apt-get install -y python3.13 python3.13-venv python3.13-dev build-essential
-RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.13 1
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
-RUN python3.13 -m ensurepip --upgrade
-RUN python3.13 -m pip install --upgrade pip
-RUN apt-get update
-RUN apt-get install -y python3.13-tk python3.13-dev
-RUN alias python=python3
-RUN echo "alias python=python3" >> ~/.bashrc
-RUN rm /usr/bin/python3
-RUN ln -s python3.13 /usr/bin/python3
+RUN add-apt-repository ppa:deadsnakes/ppa -y && \
+    apt-get update && apt-get install -y --no-install-recommends \
+    python3.13 python3.13-venv python3.13-dev python3.13-tk build-essential && \
+    update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.13 1 && \
+    python3.13 -m venv /opt/venv && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
-#===============
-# Cleanup Lists
-#===============
-RUN apt-get clean
-RUN rm -rf /var/lib/apt/lists/*
+ENV PATH="/opt/venv/bin:$PATH"
+
+#================
+# Install Chrome
+#================
+RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -O /tmp/chrome.deb && apt-get install -y /tmp/chrome.deb
+# Clean-up
+RUN rm /tmp/chrome.deb && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 #=====================
 # Set up SeleniumBase
 #=====================
 COPY sbase /SeleniumBase/sbase/
 COPY seleniumbase /SeleniumBase/seleniumbase/
-COPY examples /SeleniumBase/examples/
 COPY integrations /SeleniumBase/integrations/
-COPY requirements.txt /SeleniumBase/requirements.txt
-COPY setup.py /SeleniumBase/setup.py
-COPY MANIFEST.in /SeleniumBase/MANIFEST.in
-COPY pytest.ini /SeleniumBase/pytest.ini
-COPY setup.cfg /SeleniumBase/setup.cfg
-COPY virtualenv_install.sh /SeleniumBase/virtualenv_install.sh
-RUN find . -name '*.pyc' -delete
-RUN pip install --upgrade pip setuptools wheel
-RUN cd /SeleniumBase && ls && pip install -r requirements.txt --upgrade
-RUN cd /SeleniumBase && pip install .
-RUN pip install pyautogui
-RUN pip install playwright
-RUN seleniumbase get cft
-RUN seleniumbase get chromium
+COPY examples /SeleniumBase/examples/
+COPY requirements.txt setup.py MANIFEST.in pytest.ini setup.cfg virtualenv_install.sh /SeleniumBase/
+WORKDIR /SeleniumBase
 
-#=======================
-# Download chromedriver
-#=======================
+#===================
+# Install Python Packages
+#===================
+RUN /opt/venv/bin/pip install --upgrade pip
+RUN /opt/venv/bin/pip install setuptools wheel pyautogui playwright
+RUN /opt/venv/bin/pip install -r requirements.txt
+RUN /opt/venv/bin/pip install . 
 RUN seleniumbase get chromedriver --path
+# Clean-up
+RUN find . -name '*.pyc' -type f -delete && \
+    find . -type d -name '__pycache__' -exec rm -rf {} + 2>/dev/null || true
 
 #==============
 # Extra config
 #==============
 ENV DISPLAY=":99"
-RUN Xvfb :99 -screen 1 1920x1080x16 -nolisten tcp &
 
 #==========================================
 # Create entrypoint and grab example tests
 #==========================================
-COPY docker-entrypoint.sh /
-COPY run_docker_test_in_chrome.sh /
-RUN chmod +x *.sh
-ENTRYPOINT ["/docker-entrypoint.sh"]
+COPY docker-entrypoint.sh /SeleniumBase/
+COPY run_docker_test_in_chrome.sh /SeleniumBase/
+COPY my_first_test.py /SeleniumBase/
+RUN chmod +x /SeleniumBase/docker-entrypoint.sh /SeleniumBase/run_docker_test_in_chrome.sh
+ENTRYPOINT ["/SeleniumBase/docker-entrypoint.sh"]
 CMD ["/bin/bash"]
