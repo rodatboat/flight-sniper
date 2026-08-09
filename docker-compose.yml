@@ -1,6 +1,14 @@
+version: '3.9'
+
 services:
   flight-sniper:
     build: .
     container_name: flight-sniper
     shm_size: "2gb"
-    restart: "no"
+    volumes:
+      - ./output:/output
+    environment:
+      PYTHONUNBUFFERED: 1
+      # Schedule interval in hours (default: 1 hour)
+      FLIGHT_SNIPER_SCHEDULE_HOURS: 1
+    restart: unless-stopped

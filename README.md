@@ -4,7 +4,8 @@ docker build -f Dockerfile -t flight-sniper .
 docker build -t flight-sniper .
 # --rm removes the container once it exits
 docker run --rm flight-sniper
-docker run seleniumbase ./run_docker_test_in_chrome.sh
+docker run flight-sniper ./docker-entrypoint.sh
+docker run -v ${PWD}/output:/output flight-sniper
 ```
 
 # Install Deps

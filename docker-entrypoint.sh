@@ -1,5 +1,4 @@
 #!/bin/bash
 set -e
-echo "***** SeleniumBase Docker Machine *****"
-/SeleniumBase/run_docker_test_in_chrome.sh
-exec "$@"
+echo "***** Flight Sniper Runner (Hourly Scheduler) *****"
+python3 /SeleniumBase/flight_sniper.py

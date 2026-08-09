@@ -44,7 +44,6 @@ RUN rm /tmp/chrome.deb && apt-get clean && rm -rf /var/lib/apt/lists/*
 #=====================
 COPY sbase /SeleniumBase/sbase/
 COPY seleniumbase /SeleniumBase/seleniumbase/
-COPY integrations /SeleniumBase/integrations/
 COPY examples /SeleniumBase/examples/
 COPY requirements.txt setup.py MANIFEST.in pytest.ini setup.cfg virtualenv_install.sh /SeleniumBase/
 WORKDIR /SeleniumBase
@@ -67,11 +66,10 @@ RUN find . -name '*.pyc' -type f -delete && \
 ENV DISPLAY=":99"
 
 #==========================================
-# Create entrypoint and grab example tests
+# Copy application and entrypoint
 #==========================================
 COPY docker-entrypoint.sh /SeleniumBase/
-COPY run_docker_test_in_chrome.sh /SeleniumBase/
-COPY my_first_test.py /SeleniumBase/
-RUN chmod +x /SeleniumBase/docker-entrypoint.sh /SeleniumBase/run_docker_test_in_chrome.sh
+COPY flight_sniper.py /SeleniumBase/
+RUN chmod +x /SeleniumBase/docker-entrypoint.sh
 ENTRYPOINT ["/SeleniumBase/docker-entrypoint.sh"]
 CMD ["/bin/bash"]
