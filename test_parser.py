@@ -18,9 +18,9 @@ logger = logging.getLogger(__name__)
 
 def test_parse_from_file():
     """Test parsing flight data from the saved HTML file."""
-    logger.info("="*60)
+    logger.info("-"*40)
     logger.info("Testing FlightParser.parse_from_file()")
-    logger.info("="*60)
+    logger.info("-"*40)
     
     # Use the most recent HTML file in output directory
     output_dir = Path(__file__).parent / "output"
@@ -45,17 +45,17 @@ def test_parse_from_file():
     flights_data = parser.parse_from_file(str(html_file))
     
     # Display results
-    logger.info("\n" + "="*60)
+    logger.info("-"*40)
     logger.info("PARSING RESULTS")
-    logger.info("="*60)
+    logger.info("-"*40)
     logger.info(f"Total flights found: {flights_data.get('total_flights', 0)}")
     
     if flights_data.get('flights'):
-        logger.info("\nFlight Details:")
         for idx, flight in enumerate(flights_data['flights'], 1):
-            logger.info(f"\n  Flight {idx}:")
+            logger.info("-"*40)
+            logger.info(f"Flight {idx}:")
             for key, value in flight.items():
-                logger.info(f"    {key}: {value}")
+                logger.info(f"{key}: {value}")
     else:
         logger.warning("No flights found in the HTML")
     
@@ -64,9 +64,9 @@ def test_parse_from_file():
 
 def test_parse_calendar():
     """Test parsing calendar data from the saved HTML file."""
-    logger.info("\n" + "="*60)
+    logger.info("-"*40)
     logger.info("Testing FlightParser.read_calendar_data()")
-    logger.info("="*60)
+    logger.info("-"*40)
     
     from bs4 import BeautifulSoup
     
@@ -88,9 +88,9 @@ def test_parse_calendar():
     calendar_data = parser.read_calendar_data(soup)
     
     # Display results
-    logger.info("\n" + "="*60)
+    logger.info("-"*40)
     logger.info("CALENDAR PARSING RESULTS")
-    logger.info("="*60)
+    logger.info("-"*40)
     logger.info(f"Total calendar dates found: {len(calendar_data.get('dates', []))}")
     
     if calendar_data.get('dates'):
@@ -110,8 +110,8 @@ if __name__ == "__main__":
     flights_result = test_parse_from_file()
     
     # Test calendar parsing
-    calendar_result = test_parse_calendar()
+    # calendar_result = test_parse_calendar()
     
-    logger.info("\n" + "="*60)
+    logger.info("-"*40)
     logger.info("Tests Completed!")
-    logger.info("="*60)
+    logger.info("-"*40)
