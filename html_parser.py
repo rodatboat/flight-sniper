@@ -62,26 +62,32 @@ class FlightParser:
         
         return leg_data
     
+    def _load_soup(self, file_path):
+        with open(file_path, 'r', encoding='utf-8') as f:
+            return BeautifulSoup(f.read(), 'html.parser')
+
     def parse_from_file(self, file_path):
-        """Parse flight data from an HTML file.
-        
-        Args:
-            file_path (str): Path to the HTML file to parse
-            
-        Returns:
-            dict: Parsed flight data
-        """
+        """Parse daily flight list from an HTML file (output/YYYY/MM/DD/...)."""
         logger.info(f"Reading HTML from file: {file_path}")
         try:
-            with open(file_path, 'r', encoding='utf-8') as f:
-                html_content = f.read()
-            soup = BeautifulSoup(html_content, 'html.parser')
-            return self._read_flight_list_data(soup)
+            return self._read_flight_list_data(self._load_soup(file_path))
         except FileNotFoundError:
             logger.error(f"File not found: {file_path}")
             return {}
         except Exception as e:
             logger.error(f"Error reading from file: {e}", exc_info=True)
+            return {}
+
+    def parse_monthly_from_file(self, file_path):
+        """Parse monthly calendar view from an HTML file (output/YYYY/MM/...)."""
+        logger.info(f"Reading monthly HTML from file: {file_path}")
+        try:
+            return self._read_calendar_data(self._load_soup(file_path))
+        except FileNotFoundError:
+            logger.error(f"File not found: {file_path}")
+            return {}
+        except Exception as e:
+            logger.error(f"Error reading monthly from file: {e}", exc_info=True)
             return {}
     
     def parse_from_soup(self, soup):
@@ -98,6 +104,22 @@ class FlightParser:
             return self._read_flight_list_data(soup)
         except Exception as e:
             logger.error(f"Error parsing from soup: {e}", exc_info=True)
+            return {}
+        
+    def parse_monthly_from_soup(self, soup):
+        """Parse flight data from BeautifulSoup content.
+        
+        Args:
+            soup (BeautifulSoup): BeautifulSoup object from the sniper run
+            
+        Returns:
+            dict: Parsed flight data
+        """
+        logger.info("Parsing monthly flight data from soup content")
+        try:
+            return self._read_calendar_data(soup)
+        except Exception as e:
+            logger.error(f"Error parsing monthly from soup: {e}", exc_info=True)
             return {}
     
     def _read_flight_list_data(self, soup):
@@ -168,7 +190,7 @@ class FlightParser:
         
         return flights_data
     
-    def read_calendar_data(self, soup):
+    def _read_calendar_data(self, soup):
         """Read calendar data from soup content (dummy method).
         
         Args:
