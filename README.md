@@ -29,9 +29,16 @@ https://www.skyscanner.com/transport/flights/miaa/dfwa/?adultsv2=1&cabinclass=ec
 
 ## Build and Run
 ```bash
+# Remove old image
+docker rmi flight-sniper
+
+# Build new image
 docker build -t flight-sniper .
+
 # --rm removes the container once it exits
-docker run --rm flight-sniper
+# -i keeps stdin open, -t allocates a pseudo-terminal
+# --name gives the container a specific name (use ${PWD}/output for Windows)
+docker run --rm -it --name flight-sniper -v ${PWD}/output:/output flight-sniper
 
 # Or
 docker compose up -d
@@ -41,6 +48,7 @@ docker compose up -d
 ```bash
 python -m venv .venv
 pip install --no-cache-dir -r requirements.txt
+python -m pip install -r ./requirements.txt
 ```
 
 ## Stealthy Guides

@@ -48,6 +48,11 @@ COPY examples /SeleniumBase/examples/
 COPY requirements.txt setup.py MANIFEST.in pytest.ini setup.cfg virtualenv_install.sh /SeleniumBase/
 WORKDIR /SeleniumBase
 
+#====================
+# Create output directory
+#====================
+RUN mkdir -p /output
+
 #===================
 # Install Python Packages
 #===================
