@@ -136,8 +136,7 @@ class FlightParser:
         logger.info("Extracting flight list data...")
         flights_data = {
             'flights': [],
-            'total_flights': 0,
-            'parsing_timestamp': None
+            'total_flights': 0
         }
         
         try:
@@ -191,39 +190,46 @@ class FlightParser:
         return flights_data
     
     def _read_calendar_data(self, soup):
-        """Read calendar data from soup content (dummy method).
-        
-        Args:
-            soup (BeautifulSoup): BeautifulSoup object containing the page
-            
-        Returns:
-            dict: Dictionary containing calendar data
-        """
         logger.info("Extracting calendar data...")
         calendar_data = {
-            'dates': [],
-            'availability': {}
+            'dates': []
         }
-        
+
         try:
-            # Dummy implementation: find calendar divs
-            calendar_divs = soup.find_all('div', class_='calendar-date')
-            logger.info(f"Found {len(calendar_divs)} calendar dates")
-            
-            for date_div in calendar_divs:
-                date_text = date_div.get_text(strip=True)
-                price_div = date_div.find('div', class_='calendar-price')
-                price = price_div.get_text(strip=True) if price_div else None
-                
-                calendar_data['dates'].append({
-                    'date': date_text,
-                    'price': price
-                })
-                logger.debug(f"Calendar date: {date_text} - {price}")
-            
+            grid = soup.find('div', class_=lambda x: x and 'BpkCalendarGrid_bpk-calendar-grid_' in x)
+            if not grid:
+                logger.warning("Calendar grid not found")
+                return calendar_data
+
+            rowgroup = grid.find('div', role='rowgroup')
+            if not rowgroup:
+                logger.warning("Calendar rowgroup not found")
+                return calendar_data
+
+            cells = rowgroup.find_all('div', role='gridcell')
+            logger.info(f"Found {len(cells)} calendar cells")
+
+            for cell in cells:
+                button = cell.find('button')
+                if not button:
+                    continue
+
+                day_p = button.find('p', class_=lambda x: x and 'date' in x.split())
+                price_p = button.find('p', class_=lambda x: x and 'price' in x.split())
+
+                day = day_p.get_text(strip=True) if day_p else None
+                price = price_p.get_text(strip=True) if price_p else None
+                # full date string e.g. "Friday, September 4, 2026, $121"
+                aria_label = button.get('aria-label', '')
+
+                if day or aria_label:
+                    entry = {'day': day, 'price': price, 'aria_label': aria_label}
+                    calendar_data['dates'].append(entry)
+                    logger.debug(f"Calendar cell: {aria_label}")
+
             logger.info(f"Successfully extracted {len(calendar_data['dates'])} calendar dates")
-            
+
         except Exception as e:
             logger.error(f"Error extracting calendar data: {e}", exc_info=True)
-        
+
         return calendar_data

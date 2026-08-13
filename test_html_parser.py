@@ -68,7 +68,7 @@ def test_parse_monthly_from_file():
     logger.info("-"*40)
     logger.info(f"Total calendar dates found: {len(calendar_data.get('dates', []))}")
     for entry in calendar_data.get('dates', []):
-        logger.info(f"  Day {int(entry.get('day') or 0):02d} {entry.get('price', ''):>6}  ({entry.get('aria_label')})")
+        logger.info(f"  {entry.get('date')} - {entry.get('price')}")
 
     return calendar_data
 
