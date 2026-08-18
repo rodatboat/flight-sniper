@@ -1,5 +1,21 @@
 # Flight Sniper
 
+## Usage
+
+```bash
+# Daily one-way flights
+python cli_runner.py --daily --from DFW --to MIA --date 2026-09-03
+
+# Monthly with surrounding airports
+python cli_runner.py --monthly --from DFWA --to MIAA --year 2026 --month 9
+
+# Scrape and parse immediately
+python cli_runner.py --daily --from DFW --to MIA --date 2026-09-03 --parse
+
+# Round-trip (flag ready for future implementation)
+python cli_runner.py --daily --from DFW --to MIA --date 2026-09-03 --roundtrip
+```
+
 ## Skyscanner Links
 
 ```bash

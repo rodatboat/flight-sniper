@@ -1,5 +1,7 @@
 """Flight Parser - Parse flight data from Skyscanner HTML."""
+import json
 import logging
+from pathlib import Path
 from bs4 import BeautifulSoup
 
 logger = logging.getLogger(__name__)
@@ -65,12 +67,29 @@ class FlightParser:
     def _load_soup(self, file_path):
         with open(file_path, 'r', encoding='utf-8') as f:
             return BeautifulSoup(f.read(), 'html.parser')
+    
+    def _save_json(self, data, file_path):
+        """Save parsed data to a JSON file with the same name.
+        
+        Args:
+            data (dict): Parsed flight data to save
+            file_path (str): Original HTML file path
+        """
+        try:
+            json_path = Path(file_path).with_suffix('.json')
+            with open(json_path, 'w', encoding='utf-8') as f:
+                json.dump(data, f, indent=2, ensure_ascii=False)
+            logger.info(f"✓ Saved JSON to {json_path}")
+        except Exception as e:
+            logger.error(f"Error saving JSON: {e}", exc_info=True)
 
     def parse_from_file(self, file_path):
-        """Parse daily flight list from an HTML file (output/YYYY/MM/DD/...)."""
+        """Parse daily flight list from an HTML file (output/YYYY/MM/DD/...) and save as JSON."""
         logger.info(f"Reading HTML from file: {file_path}")
         try:
-            return self._read_flight_list_data(self._load_soup(file_path))
+            data = self._read_flight_list_data(self._load_soup(file_path))
+            self._save_json(data, file_path)
+            return data
         except FileNotFoundError:
             logger.error(f"File not found: {file_path}")
             return {}
@@ -79,10 +98,12 @@ class FlightParser:
             return {}
 
     def parse_monthly_from_file(self, file_path):
-        """Parse monthly calendar view from an HTML file (output/YYYY/MM/...)."""
+        """Parse monthly calendar view from an HTML file (output/YYYY/MM/...) and save as JSON."""
         logger.info(f"Reading monthly HTML from file: {file_path}")
         try:
-            return self._read_calendar_data(self._load_soup(file_path))
+            data = self._read_calendar_data(self._load_soup(file_path))
+            self._save_json(data, file_path)
+            return data
         except FileNotFoundError:
             logger.error(f"File not found: {file_path}")
             return {}
