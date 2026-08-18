@@ -101,7 +101,16 @@ class FlightParser:
         """Parse monthly calendar view from an HTML file (output/YYYY/MM/...) and save as JSON."""
         logger.info(f"Reading monthly HTML from file: {file_path}")
         try:
-            data = self._read_calendar_data(self._load_soup(file_path))
+            # Extract month from file path: output/YYYY/MM/filename.html
+            path_parts = Path(file_path).parts
+            month = None
+            if len(path_parts) >= 2:
+                try:
+                    month = int(path_parts[-2])  # MM directory
+                except (ValueError, IndexError):
+                    pass
+            
+            data = self._read_calendar_data(self._load_soup(file_path), month=month)
             self._save_json(data, file_path)
             return data
         except FileNotFoundError:
@@ -127,18 +136,19 @@ class FlightParser:
             logger.error(f"Error parsing from soup: {e}", exc_info=True)
             return {}
         
-    def parse_monthly_from_soup(self, soup):
-        """Parse flight data from BeautifulSoup content.
+    def parse_monthly_from_soup(self, soup, month=None):
+        """Parse monthly calendar data from BeautifulSoup content.
         
         Args:
             soup (BeautifulSoup): BeautifulSoup object from the sniper run
+            month (int): Optional month number (1-12) to include in results
             
         Returns:
-            dict: Parsed flight data
+            dict: Parsed monthly calendar data
         """
-        logger.info("Parsing monthly flight data from soup content")
+        logger.info("Parsing monthly calendar data from soup content")
         try:
-            return self._read_calendar_data(soup)
+            return self._read_calendar_data(soup, month=month)
         except Exception as e:
             logger.error(f"Error parsing monthly from soup: {e}", exc_info=True)
             return {}
@@ -210,11 +220,13 @@ class FlightParser:
         
         return flights_data
     
-    def _read_calendar_data(self, soup):
+    def _read_calendar_data(self, soup, month=None):
         logger.info("Extracting calendar data...")
         calendar_data = {
             'dates': []
         }
+        if month is not None:
+            calendar_data['month'] = month
 
         try:
             grid = soup.find('div', class_=lambda x: x and 'BpkCalendarGrid_bpk-calendar-grid_' in x)
@@ -245,6 +257,8 @@ class FlightParser:
 
                 if day or aria_label:
                     entry = {'day': day, 'price': price, 'aria_label': aria_label}
+                    if month is not None:
+                        entry['month'] = month
                     calendar_data['dates'].append(entry)
                     logger.debug(f"Calendar cell: {aria_label}")
 

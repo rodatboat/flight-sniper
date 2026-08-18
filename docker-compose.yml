@@ -9,6 +9,8 @@ services:
       - ./output:/output
     environment:
       PYTHONUNBUFFERED: 1
+      # Output directory for flight data (default: /output in container)
+      FLIGHT_SNIPER_OUTPUT_DIR: /output
       # Schedule interval in hours (default: 1 hour)
       FLIGHT_SNIPER_SCHEDULE_HOURS: 1
     restart: unless-stopped

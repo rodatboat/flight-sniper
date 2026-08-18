@@ -1,0 +1,85 @@
+{
+  "flights": [
+    {
+      "price": "$131",
+      "airline": "Frontier Airlines",
+      "departure_time": "10:02 AM",
+      "departure_airport": "DFW",
+      "flight_duration": "3h 10",
+      "stops_info": "Direct",
+      "arrival_time": "2:12 PM",
+      "arrival_airport": "MIA"
+    },
+    {
+      "price": "$290",
+      "airline": "American Airlines",
+      "departure_time": "10:26 AM",
+      "departure_airport": "DFW",
+      "flight_duration": "3h 03",
+      "stops_info": "Direct",
+      "arrival_time": "2:29 PM",
+      "arrival_airport": "MIA"
+    },
+    {
+      "price": "$290",
+      "airline": "American Airlines",
+      "departure_time": "7:17 PM",
+      "departure_airport": "DFW",
+      "flight_duration": "2h 58",
+      "stops_info": "Direct",
+      "arrival_time": "11:15 PM",
+      "arrival_airport": "MIA"
+    },
+    {
+      "price": "$290",
+      "airline": "American Airlines",
+      "departure_time": "8:00 PM",
+      "departure_airport": "DFW",
+      "flight_duration": "2h 58",
+      "stops_info": "Direct",
+      "arrival_time": "11:58 PM",
+      "arrival_airport": "MIA"
+    },
+    {
+      "price": "$290",
+      "airline": "American Airlines",
+      "departure_time": "6:05 PM",
+      "departure_airport": "DFW",
+      "flight_duration": "3h",
+      "stops_info": "Direct",
+      "arrival_time": "10:05 PM",
+      "arrival_airport": "MIA"
+    },
+    {
+      "price": "$290",
+      "airline": "American Airlines",
+      "departure_time": "5:00 PM",
+      "departure_airport": "DFW",
+      "flight_duration": "3h 05",
+      "stops_info": "Direct",
+      "arrival_time": "9:05 PM",
+      "arrival_airport": "MIA"
+    },
+    {
+      "price": "$290",
+      "airline": "American Airlines",
+      "departure_time": "12:47 PM",
+      "departure_airport": "DFW",
+      "flight_duration": "3h 03",
+      "stops_info": "Direct",
+      "arrival_time": "4:50 PM",
+      "arrival_airport": "MIA"
+    },
+    {
+      "price": "$290",
+      "airline": "American Airlines",
+      "departure_time": "2:33 PM",
+      "departure_airport": "DFW",
+      "flight_duration": "3h 06",
+      "stops_info": "Direct",
+      "arrival_time": "6:39 PM",
+      "arrival_airport": "MIA"
+    }
+  ],
+  "total_flights": 8
+}

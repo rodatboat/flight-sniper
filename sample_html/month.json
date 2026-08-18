@@ -1,0 +1,214 @@
+{
+  "dates": [
+    {
+      "day": "30",
+      "price": "",
+      "aria_label": "Sunday, August 30, 2026"
+    },
+    {
+      "day": "31",
+      "price": "",
+      "aria_label": "Monday, August 31, 2026"
+    },
+    {
+      "day": "1",
+      "price": "$65",
+      "aria_label": "Tuesday, September 1, 2026, $65, Low price"
+    },
+    {
+      "day": "2",
+      "price": "$66",
+      "aria_label": "Wednesday, September 2, 2026, $66, Low price"
+    },
+    {
+      "day": "3",
+      "price": "$103",
+      "aria_label": "Thursday, September 3, 2026, $103"
+    },
+    {
+      "day": "4",
+      "price": "$121",
+      "aria_label": "Friday, September 4, 2026, $121"
+    },
+    {
+      "day": "5",
+      "price": "$64",
+      "aria_label": "Saturday, September 5, 2026, $64, Low price"
+    },
+    {
+      "day": "6",
+      "price": "$79",
+      "aria_label": "Sunday, September 6, 2026, $79"
+    },
+    {
+      "day": "7",
+      "price": "$121",
+      "aria_label": "Monday, September 7, 2026, $121"
+    },
+    {
+      "day": "8",
+      "price": "$65",
+      "aria_label": "Tuesday, September 8, 2026, $65, Low price"
+    },
+    {
+      "day": "9",
+      "price": "$65",
+      "aria_label": "Wednesday, September 9, 2026, $65, Low price"
+    },
+    {
+      "day": "10",
+      "price": "$66",
+      "aria_label": "Thursday, September 10, 2026, $66, Low price"
+    },
+    {
+      "day": "11",
+      "price": "$68",
+      "aria_label": "Friday, September 11, 2026, $68"
+    },
+    {
+      "day": "12",
+      "price": "$65",
+      "aria_label": "Saturday, September 12, 2026, $65, Low price"
+    },
+    {
+      "day": "13",
+      "price": "$73",
+      "aria_label": "Sunday, September 13, 2026, $73"
+    },
+    {
+      "day": "14",
+      "price": "$74",
+      "aria_label": "Monday, September 14, 2026, $74"
+    },
+    {
+      "day": "15",
+      "price": "$94",
+      "aria_label": "Tuesday, September 15, 2026, $94"
+    },
+    {
+      "day": "16",
+      "price": "$65",
+      "aria_label": "Wednesday, September 16, 2026, $65, Low price"
+    },
+    {
+      "day": "17",
+      "price": "$87",
+      "aria_label": "Thursday, September 17, 2026, $87"
+    },
+    {
+      "day": "18",
+      "price": "$74",
+      "aria_label": "Friday, September 18, 2026, $74"
+    },
+    {
+      "day": "19",
+      "price": "$64",
+      "aria_label": "Saturday, September 19, 2026, $64, Low price"
+    },
+    {
+      "day": "20",
+      "price": "$74",
+      "aria_label": "Sunday, September 20, 2026, $74"
+    },
+    {
+      "day": "21",
+      "price": "$219",
+      "aria_label": "Monday, September 21, 2026, $219"
+    },
+    {
+      "day": "22",
+      "price": "$74",
+      "aria_label": "Tuesday, September 22, 2026, $74"
+    },
+    {
+      "day": "23",
+      "price": "$62",
+      "aria_label": "Wednesday, September 23, 2026, $62, Low price"
+    },
+    {
+      "day": "24",
+      "price": "$66",
+      "aria_label": "Thursday, September 24, 2026, $66, Low price"
+    },
+    {
+      "day": "25",
+      "price": "$73",
+      "aria_label": "Friday, September 25, 2026, $73"
+    },
+    {
+      "day": "26",
+      "price": "$66",
+      "aria_label": "Saturday, September 26, 2026, $66, Low price"
+    },
+    {
+      "day": "27",
+      "price": "$74",
+      "aria_label": "Sunday, September 27, 2026, $74"
+    },
+    {
+      "day": "28",
+      "price": "$91",
+      "aria_label": "Monday, September 28, 2026, $91"
+    },
+    {
+      "day": "29",
+      "price": "$66",
+      "aria_label": "Tuesday, September 29, 2026, $66, Low price"
+    },
+    {
+      "day": "30",
+      "price": "$66",
+      "aria_label": "Wednesday, September 30, 2026, $66, Low price"
+    },
+    {
+      "day": "1",
+      "price": "",
+      "aria_label": "Thursday, October 1, 2026"
+    },
+    {
+      "day": "2",
+      "price": "",
+      "aria_label": "Friday, October 2, 2026"
+    },
+    {
+      "day": "3",
+      "price": "",
+      "aria_label": "Saturday, October 3, 2026"
+    },
+    {
+      "day": "4",
+      "price": "",
+      "aria_label": "Sunday, October 4, 2026"
+    },
+    {
+      "day": "5",
+      "price": "",
+      "aria_label": "Monday, October 5, 2026"
+    },
+    {
+      "day": "6",
+      "price": "",
+      "aria_label": "Tuesday, October 6, 2026"
+    },
+    {
+      "day": "7",
+      "price": "",
+      "aria_label": "Wednesday, October 7, 2026"
+    },
+    {
+      "day": "8",
+      "price": "",
+      "aria_label": "Thursday, October 8, 2026"
+    },
+    {
+      "day": "9",
+      "price": "",
+      "aria_label": "Friday, October 9, 2026"
+    },
+    {
+      "day": "10",
+      "price": "",
+      "aria_label": "Saturday, October 10, 2026"
+    }
+  ]
+}

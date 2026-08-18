@@ -74,7 +74,7 @@ ENV DISPLAY=":99"
 # Copy application and entrypoint
 #==========================================
 COPY docker-entrypoint.sh /SeleniumBase/
-COPY flight_sniper.py /SeleniumBase/
+COPY flight_sniper.py html_parser.py util.py cli_runner.py /SeleniumBase/
 RUN chmod +x /SeleniumBase/docker-entrypoint.sh
 ENTRYPOINT ["/SeleniumBase/docker-entrypoint.sh"]
 CMD ["/bin/bash"]

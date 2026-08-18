@@ -121,11 +121,11 @@ def scrape_monthly(from_airport: str, to_airport: str, year: int, month: int) ->
 
 if __name__ == "__main__":
     logger.info("-"*40)
-    logger.info(f"Flight Sniper - Starting")
+    logger.info(f"Flight Sniper - Startup Success")
     logger.info("-"*40)
 
-    scrape_daily("dfwa", "wasa", date(2026, 9, 3))
-    scrape_monthly("dfwa", "wasa", 2026, 9)
+    # scrape_daily("dfwa", "wasa", date(2026, 9, 3))
+    # scrape_monthly("dfwa", "wasa", 2026, 9)
 
     # scheduler = BackgroundScheduler()
     # scheduler.add_job(
@@ -137,8 +137,9 @@ if __name__ == "__main__":
     # logger.info(f"Scheduler started - will run every {SCHEDULE_HOURS} hour(s)")
 
     try:
-        while True:
-            time.sleep(1)
+        # while True:
+        #     time.sleep(1)
+        time.sleep(1)
     except KeyboardInterrupt:
         logger.info("Shutting down...")
         # scheduler.shutdown()
